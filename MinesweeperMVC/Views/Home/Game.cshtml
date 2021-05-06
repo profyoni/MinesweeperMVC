@@ -1,0 +1,33 @@
+﻿@model MinesweeperModel
+
+@{
+    ViewData["Title"] = "Game Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome Ari</h1>
+
+
+     
+        <br />
+
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<table>
+    @{
+        for (int row = 0; row < Model.Rows; row++)
+        {
+        <tr>
+            @for (int col = 0; col < Model.Columns; col++)
+            {
+                <td>
+                    @Html.ActionLink( Model.Display(row,col), 
+                        "Move", "Home",
+                        new { @row = row, @col = col }, null)
+                </td>
+            }
+        </tr>
+        }
+    }
+    
+</table>
