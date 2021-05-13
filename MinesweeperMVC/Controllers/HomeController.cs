@@ -9,13 +9,32 @@ using MinesweeperMVC.Models;
 
 namespace MinesweeperMVC.Controllers
 {
+    public class User
+    {
+        public int UserId { get; set; }
+        public string Name { get; set; }
+        public string PasswordEncrypted { get; set; }
+    }
+    public interface IDatabase
+    {
+        List<User> Users { get; set; }
+    }
+
+    public class MS_Context : IDatabase
+    {
+        public List<User> Users { get; set; }
+    }
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private static MinesweeperModel _mm;
-        public HomeController(ILogger<HomeController> logger)
+        public static MinesweeperModel _mm;
+        private IDatabase db = new MS_Context();
+        public HomeController(ILogger<HomeController> logger, IDatabase db) // dependency injection
         {
             _logger = logger;
+            _mm = new MinesweeperModel(10, 5, 8); // store as a session variable
+            // session variables stored locally in RAM
+            // 5 servers load balanced 
         }
 
         public IActionResult Index()
@@ -29,7 +48,6 @@ namespace MinesweeperMVC.Controllers
         }
         public IActionResult Game()
         {
-            _mm = new MinesweeperModel(10, 5, 8);
             return View(model: _mm);
         }
 
